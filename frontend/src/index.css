@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme: Light (default) ── */
+:root {
+  --app-bg:     248 250 252;   /* slate-50  */
+  --app-surface: 255 255 255;   /* white     */
+  --app-raised:  241 245 249;   /* slate-100 */
+  --app-border:  226 232 240;   /* slate-200 */
+  --app-text:    15 23 42;      /* slate-900 */
+  --app-text-2:  71 85 105;     /* slate-600 */
+  --app-text-3:  148 163 184;   /* slate-400 */
+}
+
+/* ── Theme: Dark ── */
+.dark {
+  --app-bg:     8 11 20;        /* #080b14   */
+  --app-surface: 15 17 23;      /* #0f1117   */
+  --app-raised:  26 29 39;      /* #1a1d27   */
+  --app-border:  42 45 58;      /* #2a2d3a   */
+  --app-text:    241 245 249;   /* slate-100 */
+  --app-text-2:  148 163 184;   /* slate-400 */
+  --app-text-3:  100 116 139;   /* slate-500 */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: rgb(var(--app-bg));
+  color: rgb(var(--app-text));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Fix browser UA white background/border on inputs in dark mode */
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+  background-color: rgb(var(--app-surface)) !important;
+  color: rgb(var(--app-text)) !important;
+  border-color: rgb(var(--app-border)) !important;
+}
+
+.react-flow__node {
+  cursor: grab;
+}
+
+.react-flow__node:active {
+  cursor: grabbing;
+}

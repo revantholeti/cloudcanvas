@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build output
+frontend/dist/
+
+# Python
+backend/venv/
+backend/__pycache__/
+backend/app/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Environment files
+.env
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Fly.io
+.fly/
