@@ -167,7 +167,24 @@ async def _generate_with_gemini(diagram: Diagram, format: str) -> dict[str, str]
     return _parse_response(response.text)
 
 
+async def _generate_with_groq(diagram: Diagram, format: str) -> dict[str, str]:
+    from groq import AsyncGroq
+    client = AsyncGroq(api_key=settings.groq_api_key)
+    _, user_message = _build_prompt(diagram, format)
+    response = await client.chat.completions.create(
+        model="compound-beta-mini",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_message},
+        ],
+        max_tokens=8000,
+    )
+    return _parse_response(response.choices[0].message.content)
+
+
 async def generate_iac(diagram: Diagram, format: str, provider: str = "anthropic") -> dict[str, str]:
     if provider == "gemini":
         return await _generate_with_gemini(diagram, format)
+    if provider == "groq":
+        return await _generate_with_groq(diagram, format)
     return await _generate_with_anthropic(diagram, format)

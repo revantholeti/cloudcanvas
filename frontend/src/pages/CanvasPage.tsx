@@ -544,6 +544,7 @@ function CanvasInner() {
             >
               <option value="anthropic">Claude</option>
               <option value="gemini">Gemini</option>
+              <option value="groq">Groq</option>
             </select>
             <select
               value={iacFormat}
