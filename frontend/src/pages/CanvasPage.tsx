@@ -117,6 +117,7 @@ function CanvasInner() {
   const [title, setTitle] = useState('Untitled Diagram')
   const [saving, setSaving] = useState(false)
   const [iacFormat, setIacFormat] = useState('terraform')
+  const [iacProvider, setIacProvider] = useState('anthropic')
   const [iacLoading, setIacLoading] = useState(false)
   const [iacResult, setIacResult] = useState<{ format: string; files: Record<string, string> } | null>(null)
   const [snapToGrid, setSnapToGrid] = useState(false)
@@ -412,7 +413,7 @@ function CanvasInner() {
     setIacLoading(true)
     try {
       await save()
-      const { data } = await api.post('/iac/generate', { diagram_id: id, format: iacFormat })
+      const { data } = await api.post('/iac/generate', { diagram_id: id, format: iacFormat, provider: iacProvider })
       setIacResult({ format: iacFormat, files: data.files })
     } catch {
       toast.error('IaC generation failed')
@@ -536,6 +537,14 @@ function CanvasInner() {
         <div className="flex items-center gap-2 ml-auto shrink-0">
           {/* IaC */}
           <div className="flex items-center gap-0 border border-canvas-border rounded-lg overflow-hidden">
+            <select
+              value={iacProvider}
+              onChange={(e) => setIacProvider(e.target.value)}
+              className="bg-canvas-bg px-2 py-1.5 text-xs text-slate-300 focus:outline-none border-r border-canvas-border"
+            >
+              <option value="anthropic">Claude</option>
+              <option value="gemini">Gemini</option>
+            </select>
             <select
               value={iacFormat}
               onChange={(e) => setIacFormat(e.target.value)}

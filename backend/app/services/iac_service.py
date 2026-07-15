@@ -3,7 +3,7 @@ from anthropic import AsyncAnthropic
 from app.config import settings
 from app.models.diagram import Diagram
 
-client = AsyncAnthropic(api_key=settings.anthropic_api_key)
+_anthropic_client = AsyncAnthropic(api_key=settings.anthropic_api_key)
 
 SYSTEM_PROMPT = """You are a senior cloud infrastructure engineer producing production-ready Infrastructure as Code.
 
@@ -91,11 +91,9 @@ Rules:
 
 
 def _build_graph_summary(diagram: Diagram) -> dict:
-    """Extract and clean the graph data for the LLM prompt."""
     nodes = diagram.graph_data.get("nodes", [])
     edges = diagram.graph_data.get("edges", [])
 
-    # Flatten node data into a clear structure for the LLM
     clean_nodes = []
     for n in nodes:
         data = n.get("data", {})
@@ -121,10 +119,9 @@ def _build_graph_summary(diagram: Diagram) -> dict:
     }
 
 
-async def generate_iac(diagram: Diagram, format: str) -> dict[str, str]:
+def _build_prompt(diagram: Diagram, format: str) -> tuple[str, str]:
     graph_summary = _build_graph_summary(diagram)
     format_instruction = FORMAT_INSTRUCTIONS.get(format, FORMAT_INSTRUCTIONS["terraform"])
-
     user_message = f"""Architecture diagram: {diagram.title}
 CSP: {diagram.csp}
 
@@ -134,19 +131,43 @@ Graph:
 {format_instruction}
 
 Return ONLY valid JSON: {{"files": {{"filename": "file content here"}}}}"""
+    return SYSTEM_PROMPT, user_message
 
-    response = await client.messages.create(
-        model="claude-sonnet-4-5",
-        max_tokens=16000,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_message}],
-    )
 
-    text = response.content[0].text.strip()
+def _parse_response(text: str) -> dict[str, str]:
+    text = text.strip()
     if "```json" in text:
         text = text.split("```json")[1].split("```")[0].strip()
     elif "```" in text:
         text = text.split("```")[1].split("```")[0].strip()
-
     result = json.loads(text)
     return result.get("files", {})
+
+
+async def _generate_with_anthropic(diagram: Diagram, format: str) -> dict[str, str]:
+    system, user_message = _build_prompt(diagram, format)
+    response = await _anthropic_client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=16000,
+        system=system,
+        messages=[{"role": "user", "content": user_message}],
+    )
+    return _parse_response(response.content[0].text)
+
+
+async def _generate_with_gemini(diagram: Diagram, format: str) -> dict[str, str]:
+    import google.generativeai as genai
+    genai.configure(api_key=settings.gemini_api_key)
+    model = genai.GenerativeModel(
+        model_name="gemini-1.5-pro",
+        system_instruction=SYSTEM_PROMPT,
+    )
+    _, user_message = _build_prompt(diagram, format)
+    response = await model.generate_content_async(user_message)
+    return _parse_response(response.text)
+
+
+async def generate_iac(diagram: Diagram, format: str, provider: str = "anthropic") -> dict[str, str]:
+    if provider == "gemini":
+        return await _generate_with_gemini(diagram, format)
+    return await _generate_with_anthropic(diagram, format)

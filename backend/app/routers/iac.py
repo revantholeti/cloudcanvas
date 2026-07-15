@@ -21,6 +21,6 @@ async def generate_iac(
     if not diagram.graph_data.get("nodes"):
         raise HTTPException(status_code=400, detail="Diagram has no components")
 
-    files = await iac_service.generate_iac(diagram, request.format)
+    files = await iac_service.generate_iac(diagram, request.format, request.provider)
     combined = "\n\n".join(f"# {name}\n{content}" for name, content in files.items())
     return IaCGenerateResponse(format=request.format, content=combined, files=files)

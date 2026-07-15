@@ -42,6 +42,7 @@ class DiagramVersionOut(BaseModel):
 class IaCGenerateRequest(BaseModel):
     diagram_id: str
     format: str = "terraform"
+    provider: str = "anthropic"  # "anthropic" or "gemini"
 
 
 class IaCGenerateResponse(BaseModel):
