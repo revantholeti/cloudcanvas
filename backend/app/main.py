@@ -7,8 +7,13 @@ app = FastAPI(title="CloudCanvas API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url, "http://localhost:5173", "http://localhost:5174"],
-    allow_origin_regex=r"https://(www\.)?cloudcanvas\.in|https://.*\.vercel\.app",
+    allow_origins=[
+        "https://cloudcanvas.in",
+        "https://www.cloudcanvas.in",
+        "http://localhost:5173",
+        "http://localhost:5174",
+    ],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
