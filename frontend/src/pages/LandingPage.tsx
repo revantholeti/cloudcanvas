@@ -1,10 +1,11 @@
+import { type ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import ThemeToggle from '../components/ThemeToggle'
 import { LogoFull, LogoMark } from '../components/Logo'
 
 function FeatureIcon({ name }: { name: string }) {
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, ReactElement> = {
     drag: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
@@ -106,7 +107,7 @@ const FEATURES: { iconName: string; color: string; title: string; desc: string }
 ]
 
 // bg color, svg path(s) for each component icon
-const COMPONENTS: { label: string; bg: string; svg: JSX.Element }[] = [
+const COMPONENTS: { label: string; bg: string; svg: ReactElement }[] = [
   {
     label: 'EC2', bg: 'bg-orange-500',
     svg: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 12h6M12 9v6"/></svg>,
@@ -519,7 +520,7 @@ resource "aws_instance" "app" {
                 ['No login needed', <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>],
                 ['Always up to date', <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>],
                 ['Restore any version', <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/><polyline points="12 7 12 12 15 15"/></svg>],
-              ] as [string, JSX.Element][]).map(([t, icon]) => (
+              ] as [string, ReactElement][]).map(([t, icon]) => (
                 <div key={t} className="flex items-center gap-2 text-sm text-app-text-2">
                   <span className="text-app-text-3 shrink-0">{icon}</span>{t}
                 </div>

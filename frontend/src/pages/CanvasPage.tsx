@@ -5,7 +5,7 @@ import {
   useNodesState, useEdgesState, useReactFlow,
   type Connection, type Node, type Edge,
   BackgroundVariant, ReactFlowProvider,
-  applyNodeChanges, applyEdgeChanges, type NodeChange, type EdgeChange,
+  type NodeChange, type EdgeChange,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { useDiagramStore } from '../store/diagramStore'
@@ -207,6 +207,7 @@ function CanvasInner() {
       pushSnapshot(nodes, edges)
       setEdges((eds) => addEdge({
         ...params,
+        id: `edge-${Date.now()}`,
         type: 'cloudEdge',
         data: { edgeStyle: 'bezier', animated: true },
         style: { stroke: '#6366f1' },
@@ -239,6 +240,7 @@ function CanvasInner() {
   const onDrop = useCallback(
     (e: React.DragEvent | DragEvent) => {
       e.preventDefault()
+      if (!e.dataTransfer) return
       const raw = e.dataTransfer.getData('application/cloudcanvas')
       if (!raw) return
       const component = JSON.parse(raw)

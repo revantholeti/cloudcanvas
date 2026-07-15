@@ -118,7 +118,7 @@ function SharedViewInner() {
         style={{ background: '#0f1117' }}
       >
         <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#2a2d3a" />
-        <Controls style={{ background: '#1a1d27', border: '1px solid #2a2d3a' }} showInteractiveControl={false} />
+        <Controls style={{ background: '#1a1d27', border: '1px solid #2a2d3a' }} showInteractive={false} />
         <MiniMap style={{ background: '#1a1d27', border: '1px solid #2a2d3a' }} nodeColor="#6366f1" />
       </ReactFlow>
     </div>

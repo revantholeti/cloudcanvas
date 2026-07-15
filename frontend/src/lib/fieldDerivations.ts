@@ -31,7 +31,7 @@ const AZ_BY_REGION: Record<string, string[]> = {
 }
 
 // Azure location → resource group naming hint
-const AZURE_LOCATION_SHORT: Record<string, string> = {
+const _AZURE_LOCATION_SHORT: Record<string, string> = {
   'East US': 'eastus', 'East US 2': 'eastus2', 'West US': 'westus', 'West US 2': 'westus2',
   'West US 3': 'westus3', 'Central US': 'centralus', 'North Europe': 'northeurope',
   'West Europe': 'westeurope', 'UK South': 'uksouth', 'Southeast Asia': 'southeastasia',
@@ -84,7 +84,7 @@ export function deriveFieldOverride(
   const region = inheritedConfig['region'] as string | undefined
   const vpcCidr = (inheritedConfig['cidr_block'] as string | undefined) ?? (inheritedConfig['subnet_cidr'] as string | undefined)
   const vnetAddressSpace = inheritedConfig['address_space'] as string | undefined
-  const subnetCidr = inheritedConfig['subnet_cidr'] as string | undefined
+  const _subnetCidr = inheritedConfig['subnet_cidr'] as string | undefined
 
   // ── Availability Zone: filter to region's AZs ──────────────────────────────
   if (fieldKey === 'availability_zone' && region) {
