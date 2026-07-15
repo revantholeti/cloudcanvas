@@ -159,7 +159,7 @@ async def _generate_with_gemini(diagram: Diagram, format: str) -> dict[str, str]
     import google.generativeai as genai
     genai.configure(api_key=settings.gemini_api_key)
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-pro",
+        model_name="gemini-2.0-flash",
         system_instruction=SYSTEM_PROMPT,
     )
     _, user_message = _build_prompt(diagram, format)
