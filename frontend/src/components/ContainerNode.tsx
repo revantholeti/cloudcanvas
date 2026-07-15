@@ -62,9 +62,9 @@ export default memo(function ContainerNode({ data, selected }: NodeProps) {
             <span style={{ fontSize: 14 }}>{fallbackEmoji}</span>
           )}
           <span style={{ fontSize: 12, fontWeight: 600, color }}>{data.label as string}</span>
-          {data.sublabel && (
+          {data.sublabel ? (
             <span style={{ fontSize: 10, color: '#94a3b8', marginLeft: 4 }}>{data.sublabel as string}</span>
-          )}
+          ) : null}
         </div>
       </div>
 

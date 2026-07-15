@@ -46,9 +46,9 @@ export default memo(function CloudNode({ data, selected }: NodeProps) {
         <span className="text-xs text-white font-medium text-center leading-tight">
           {data.label as string}
         </span>
-        {data.sublabel && (
+        {data.sublabel ? (
           <span className="text-xs text-slate-500">{data.sublabel as string}</span>
-        )}
+        ) : null}
       </div>
     </div>
   )
